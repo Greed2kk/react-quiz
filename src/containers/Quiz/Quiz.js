@@ -11,7 +11,6 @@ class Quiz extends Component {
     this.props = props
     this.state = {
       activeQuestion: 0,
-      // eslint-disable-next-line react/no-unused-state
       answerState: null,
       rightAnswers: 0,
       quiz: quizData,
@@ -30,16 +29,21 @@ class Quiz extends Component {
 
     if (!this.finishedQuiz()) {
       if (currentQuestion.correctAnswerId === answerId) {
-        this.setState(currentState => ({
-          rightAnswers: currentState.rightAnswers + 1,
+        this.setState(pervState => ({
+          rightAnswers: pervState.rightAnswers + 1,
+          answerState: { [answerId]: 'Right' },
         }))
+      } else {
+        this.setState({
+          answerState: { [answerId]: 'Wrong' },
+        })
       }
       const delayAnswerCheck = setTimeout(() => {
-        this.setState(currentState => ({
-          activeQuestion: ++currentState.activeQuestion,
+        this.setState(pervState => ({
+          activeQuestion: ++pervState.activeQuestion,
         }))
         clearTimeout(delayAnswerCheck)
-      }, 500)
+      }, 5000)
     }
   }
 
@@ -53,6 +57,7 @@ class Quiz extends Component {
       quiz,
       activeQuestion,
       rightAnswers,
+      answerState,
     } = this.state
     const totalQuestions = quiz.length
     return (
@@ -67,6 +72,7 @@ class Quiz extends Component {
               onAnswerClick={this.onAnswerClickHandler}
               quizLength={totalQuestions}
               answerNumber={activeQuestion + 1}
+              answerState={answerState}
             />
           </>
         ) : (

@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Orelega+One&display=swap');
+@import "../../scss/mixins";
+@import "../../scss/variables";
+
 .ResultQuiz {
+  @include flex-column();
+  align-items: center;
+
   & h1 {
-  color: white;
+  color: $quiz-text-color;
   margin-left: 10px;
+  }
+  & p {
+    font-size: 40px;
+    color: $quiz-text-color;
+    font-family: 'Orelega One', cursive;
   }
 }
