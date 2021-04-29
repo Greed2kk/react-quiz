@@ -1,0 +1,10 @@
+@mixin flex-column(){
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin set-border($color: #fff, $width: 2px, $radius: 15px, $style: solid) {
+  border: $color $style $width;
+  border-radius: $radius;
+
+}

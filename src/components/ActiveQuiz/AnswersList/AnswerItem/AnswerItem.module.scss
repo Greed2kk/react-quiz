@@ -1,0 +1,14 @@
+@import '../../../../scss/variables';
+@import '../../../../scss/mixins';
+
+.AnswerItem {
+  @include set-border($border-color, 2px, 5px);
+  padding: 5px 10px;
+  margin-bottom: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background: #5fa0f4;
+    transition: background 0.3s ease-in-out;
+  }
+}

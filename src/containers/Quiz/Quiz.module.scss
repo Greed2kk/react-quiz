@@ -1,0 +1,19 @@
+@import "../../scss/variables";
+
+.Quiz {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  padding: 20px 0 0 0;
+  width: 100%;
+  background: linear-gradient(180deg, #4469b9 0%, #d7dae2 100%);
+}
+
+.Quiz h1 {
+  color: $quiz-text-color;
+  margin-left: 10px;
+}
