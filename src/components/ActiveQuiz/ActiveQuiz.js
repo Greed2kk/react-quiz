@@ -9,6 +9,7 @@ const ActiveQuiz = ({
   onAnswerClick,
   answerNumber,
   quizLength,
+  answerState,
 }) => (
   <>
     <p>
@@ -23,6 +24,7 @@ const ActiveQuiz = ({
 
     <ul>
       <AnswersList
+        answerState={answerState}
         answers={answers}
         onAnswerClick={onAnswerClick}
       />

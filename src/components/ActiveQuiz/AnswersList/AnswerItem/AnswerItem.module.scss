@@ -11,4 +11,16 @@
     background: #5fa0f4;
     transition: background 0.3s ease-in-out;
   }
+  &.wrong {
+    @include blinkAnimation(wrong);
+    @include frameAnimation(wrong, #ba1c1c);
+  }
+
+  &.right {
+    @include blinkAnimation(right);
+    @include frameAnimation(right, #24cb24);
+  }
+
+
+
 }

@@ -8,3 +8,19 @@
   border-radius: $radius;
 
 }
+
+@mixin blinkAnimation($name) {
+  -webkit-animation: $name 1s infinite; /* Safari 4+ */
+  -moz-animation:    $name infinite; /* Fx 5+ */
+  -o-animation:      $name 1s infinite; /* Opera 12+ */
+  animation:         $name 1s infinite; /* IE 10+, Fx 29+ */
+
+}
+
+@mixin frameAnimation($name, $color){
+  @-webkit-keyframes $name {
+    50%, 100% {
+      background-color: $color;
+    }
+  }
+}
