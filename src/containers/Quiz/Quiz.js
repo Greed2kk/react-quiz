@@ -19,7 +19,7 @@ class Quiz extends Component {
     }
     this.onAnswerClickHandler = throttle(
       this.onAnswerClickHandler.bind(this),
-      2000
+      1000
     )
   }
 
