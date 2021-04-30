@@ -12,15 +12,12 @@
     transition: background 0.3s ease-in-out;
   }
   &.wrong {
-    @include blinkAnimation(wrong);
-    @include frameAnimation(wrong, #ba1c1c);
+    animation: wrong 1s linear infinite;
+    @include frame-animation(wrong, #cf4141);
   }
 
   &.right {
-    @include blinkAnimation(right);
-    @include frameAnimation(right, #24cb24);
+    animation: right 1s linear infinite;
+    @include frame-animation(right, #30c830);
   }
-
-
-
 }

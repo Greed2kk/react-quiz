@@ -1,4 +1,4 @@
-@import "../../scss/variables";
+@import '../../scss/variables';
 
 .Quiz {
   display: flex;
@@ -11,9 +11,9 @@
   padding: 20px 0 0 0;
   width: 100%;
   background: linear-gradient(180deg, #4469b9 0%, #d7dae2 100%);
-}
 
-.Quiz h1 {
-  color: $quiz-text-color;
-  margin-left: 10px;
+  h1 {
+    color: $quiz-text-color;
+    margin-left: 10px;
+  }
 }
