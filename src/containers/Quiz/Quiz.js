@@ -4,7 +4,7 @@ import WithClasses from '../../components/hoc/withClasses'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 import ResultQuiz from '../../components/ResultQuiz/ResultQuiz'
 import quizData from '../../fixtures/react_questions'
-import { debounce } from '../../utils/debounce'
+import { throttle } from '../../utils/throttle'
 
 class Quiz extends Component {
   constructor(props) {
@@ -16,9 +16,9 @@ class Quiz extends Component {
       rightAnswers: 0,
       quiz: quizData,
     }
-    this.onAnswerClickHandler = debounce(
+    this.onAnswerClickHandler = throttle(
       this.onAnswerClickHandler.bind(this),
-      300
+      1000
     )
   }
 
@@ -43,7 +43,7 @@ class Quiz extends Component {
           answerState: null,
         }))
         clearTimeout(delayAnswerCheck)
-      }, 1000)
+      }, 500)
     }
   }
 
