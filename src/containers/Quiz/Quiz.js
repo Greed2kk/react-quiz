@@ -4,6 +4,7 @@ import WithClasses from '../../components/hoc/withClasses'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 import ResultQuiz from '../../components/ResultQuiz/ResultQuiz'
 import quizData from '../../fixtures/react_questions'
+import { debounce } from '../../utils/debounce'
 
 class Quiz extends Component {
   constructor(props) {
@@ -15,14 +16,12 @@ class Quiz extends Component {
       rightAnswers: 0,
       quiz: quizData,
     }
-    this.onAnswerClickHandler = this.onAnswerClickHandler.bind(
-      this
+    this.onAnswerClickHandler = debounce(
+      this.onAnswerClickHandler.bind(this),
+      300
     )
   }
 
-  /**
-   * @todo Пофиксить баг с быстрым прокликиванием, добавить debounce
-   */
   onAnswerClickHandler(answerId) {
     const { activeQuestion, quiz } = this.state
     const currentQuestion = quiz[activeQuestion]
@@ -44,7 +43,7 @@ class Quiz extends Component {
           answerState: null,
         }))
         clearTimeout(delayAnswerCheck)
-      }, 1500)
+      }, 1000)
     }
   }
 
