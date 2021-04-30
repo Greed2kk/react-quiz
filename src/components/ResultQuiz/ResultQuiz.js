@@ -6,7 +6,8 @@ const ResultQuiz = ({ rightAnswers, totalQuestions }) => (
   <>
     <h1>Ваш результат!</h1>
     <p>
-      Вы ответили на {rightAnswers} из {totalQuestions}{' '}
+      Вы ответили правильно на {rightAnswers} из{' '}
+      {totalQuestions} вопросов
     </p>
   </>
 )

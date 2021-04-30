@@ -1,5 +1,5 @@
-@import "../../scss/variables";
-@import "../../scss/mixins";
+@import '../../scss/variables';
+@import '../../scss/mixins';
 
 .ActiveQuiz {
   @include set-border;
@@ -9,9 +9,8 @@
   margin: 0 10px;
   box-sizing: border-box;
 
-  & p {
+  p {
     display: flex;
     justify-content: space-between;
   }
 }
-

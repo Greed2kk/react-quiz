@@ -21,7 +21,7 @@ class Quiz extends Component {
   }
 
   /**
-   * @todo Пофиксить баг с быстрым прокликиванием
+   * @todo Пофиксить баг с быстрым прокликиванием, добавить debounce
    */
   onAnswerClickHandler(answerId) {
     const { activeQuestion, quiz } = this.state
@@ -41,9 +41,10 @@ class Quiz extends Component {
       const delayAnswerCheck = setTimeout(() => {
         this.setState(pervState => ({
           activeQuestion: ++pervState.activeQuestion,
+          answerState: null,
         }))
         clearTimeout(delayAnswerCheck)
-      }, 5000)
+      }, 1500)
     }
   }
 

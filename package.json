@@ -71,7 +71,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "lint": "eslint src --ext js",
+    "lint": "stylelint '**/*.scss' eslint src --ext js",
     "lint:fix": "eslint --fix --ext .js src",
     "lint:staged": "lint-staged",
     "prepare": "husky install"
@@ -82,7 +82,10 @@
     }
   },
   "lint-staged": {
-    "*.(js|jsx)": ["npm run lint:fix", "git add"]
+    "*.(js|jsx)": [
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -171,6 +174,11 @@
     "husky": "^6.0.0",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
-    "pretty-quick": "^3.1.0"
+    "pretty-quick": "^3.1.0",
+    "stylelint": "^13.13.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-recommended": "^5.0.0",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-scss": "^3.19.0"
   }
 }
