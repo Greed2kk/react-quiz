@@ -11,6 +11,7 @@ class Quiz extends Component {
     super(props)
     this.props = props
     this.state = {
+      isFinished: false,
       activeQuestion: 0,
       answerState: null,
       rightAnswers: 0,
@@ -18,38 +19,45 @@ class Quiz extends Component {
     }
     this.onAnswerClickHandler = throttle(
       this.onAnswerClickHandler.bind(this),
-      1000
+      2000
     )
   }
 
   onAnswerClickHandler(answerId) {
-    const { activeQuestion, quiz } = this.state
+    const {
+      activeQuestion,
+      quiz,
+      rightAnswers,
+    } = this.state
     const currentQuestion = quiz[activeQuestion]
 
-    if (!this.finishedQuiz()) {
-      if (currentQuestion.correctAnswerId === answerId) {
-        this.setState(pervState => ({
-          rightAnswers: pervState.rightAnswers + 1,
-          answerState: { [answerId]: 'Right' },
-        }))
+    const delayAnswerCheck = setTimeout(() => {
+      if (this.finishedQuiz()) {
+        this.setState({ isFinished: true })
       } else {
-        this.setState({
-          answerState: { [answerId]: 'Wrong' },
-        })
-      }
-      const delayAnswerCheck = setTimeout(() => {
-        this.setState(pervState => ({
-          activeQuestion: ++pervState.activeQuestion,
+        this.setState(prevState => ({
+          activeQuestion: ++prevState.activeQuestion,
           answerState: null,
         }))
         clearTimeout(delayAnswerCheck)
-      }, 500)
+      }
+    }, 1000)
+
+    if (currentQuestion.correctAnswerId === answerId) {
+      this.setState({
+        rightAnswers: rightAnswers + 1,
+        answerState: { [answerId]: 'Right' },
+      })
+    } else {
+      this.setState({
+        answerState: { [answerId]: 'Wrong' },
+      })
     }
   }
 
   finishedQuiz() {
     const { quiz, activeQuestion } = this.state
-    return quiz.length === activeQuestion
+    return quiz.length === activeQuestion + 1
   }
 
   render() {
@@ -58,11 +66,17 @@ class Quiz extends Component {
       activeQuestion,
       rightAnswers,
       answerState,
+      isFinished,
     } = this.state
     const totalQuestions = quiz.length
     return (
       <>
-        {!this.finishedQuiz() ? (
+        {isFinished ? (
+          <ResultQuiz
+            rightAnswers={rightAnswers}
+            totalQuestions={totalQuestions}
+          />
+        ) : (
           <>
             {' '}
             <h1>Quiz: Как хорошо ты знаешь React</h1>
@@ -75,11 +89,6 @@ class Quiz extends Component {
               answerState={answerState}
             />
           </>
-        ) : (
-          <ResultQuiz
-            rightAnswers={rightAnswers}
-            totalQuestions={totalQuestions}
-          />
         )}
       </>
     )
