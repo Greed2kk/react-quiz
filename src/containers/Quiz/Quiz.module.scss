@@ -10,7 +10,11 @@
   flex-grow: 1;
   padding: 20px 0 0 0;
   width: 100%;
-  background: linear-gradient(180deg, #4469b9 0%, #d7dae2 100%);
+  background: linear-gradient(
+    180deg,
+    #4469b9 0%,
+    #d7dae2 100%
+  );
 
   h1 {
     color: $quiz-text-color;
