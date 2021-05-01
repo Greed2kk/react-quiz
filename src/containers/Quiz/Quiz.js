@@ -14,6 +14,7 @@ class Quiz extends Component {
       isFinished: false,
       activeQuestion: 0,
       answerState: null,
+      results: {},
       rightAnswers: 0,
       quiz: quizData,
     }
@@ -28,6 +29,7 @@ class Quiz extends Component {
       activeQuestion,
       quiz,
       rightAnswers,
+      results,
     } = this.state
     const currentQuestion = quiz[activeQuestion]
 
@@ -46,11 +48,15 @@ class Quiz extends Component {
     if (currentQuestion.correctAnswerId === answerId) {
       this.setState({
         rightAnswers: rightAnswers + 1,
-        answerState: { [answerId]: 'Right' },
+        answerState: {
+          [answerId]: 'Right',
+        },
+        results: { ...results, [answerId]: 'Right' },
       })
     } else {
       this.setState({
         answerState: { [answerId]: 'Wrong' },
+        results: { ...results, [answerId]: 'Wrong' }, // check here
       })
     }
   }
@@ -67,6 +73,7 @@ class Quiz extends Component {
       rightAnswers,
       answerState,
       isFinished,
+      results,
     } = this.state
     const totalQuestions = quiz.length
     return (
@@ -75,6 +82,16 @@ class Quiz extends Component {
           <ResultQuiz
             rightAnswers={rightAnswers}
             totalQuestions={totalQuestions}
+            results={results}
+            quiz={quiz}
+            onRestartHandler={() =>
+              this.setState({
+                isFinished: false,
+                activeQuestion: 0,
+                answerState: null,
+                rightAnswers: 0,
+              })
+            }
           />
         ) : (
           <>

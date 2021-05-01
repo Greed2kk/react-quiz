@@ -13,4 +13,14 @@
     display: flex;
     justify-content: space-between;
   }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+  }
+
+  small {
+    white-space: nowrap;
+  }
 }
