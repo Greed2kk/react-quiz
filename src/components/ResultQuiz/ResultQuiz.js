@@ -4,6 +4,7 @@ import { Button, Tooltip } from 'antd'
 import classes from './ResultQuiz.module.scss'
 import WithClasses from '../hoc/withClasses'
 import ResultDetails from './ResultDetails/ResultDetails'
+import MyButton from '../UI/Button/Button'
 
 const ResultQuiz = ({
   rightAnswers,
@@ -27,6 +28,7 @@ const ResultQuiz = ({
         icon={<UndoOutlined />}
       />
     </Tooltip>
+    <MyButton type="primary">Другие тесты</MyButton>
     <ResultDetails quiz={quiz} results={results} />
   </>
 )

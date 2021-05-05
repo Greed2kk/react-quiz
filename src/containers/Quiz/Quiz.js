@@ -51,12 +51,12 @@ class Quiz extends Component {
         answerState: {
           [answerId]: 'Right',
         },
-        results: { ...results, [answerId]: 'Right' },
+        results: { ...results, [activeQuestion]: 'Right' },
       })
     } else {
       this.setState({
         answerState: { [answerId]: 'Wrong' },
-        results: { ...results, [answerId]: 'Wrong' }, // check here
+        results: { ...results, [activeQuestion]: 'Wrong' }, // check here
       })
     }
   }
@@ -90,6 +90,7 @@ class Quiz extends Component {
                 activeQuestion: 0,
                 answerState: null,
                 rightAnswers: 0,
+                results: {},
               })
             }
           />
