@@ -16,12 +16,17 @@ class Quiz extends Component {
       answerState: null,
       results: {},
       rightAnswers: 0,
-      quiz: quizData,
+      quiz: quizData.questions,
     }
     this.onAnswerClickHandler = throttle(
       this.onAnswerClickHandler.bind(this),
       1000
     )
+  }
+
+  componentDidMount() {
+    // eslint-disable-next-line no-console,react/destructuring-assignment
+    console.log('Quiz ID = ', this.props.match.params.id)
   }
 
   onAnswerClickHandler(answerId) {
@@ -97,7 +102,7 @@ class Quiz extends Component {
         ) : (
           <>
             {' '}
-            <h1>Quiz: Как хорошо ты знаешь React</h1>
+            <h1>Quiz: {quizData.title}</h1>
             <ActiveQuiz
               answers={quiz[activeQuestion].answers}
               question={quiz[activeQuestion].question}
