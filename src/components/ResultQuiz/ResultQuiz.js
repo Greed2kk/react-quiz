@@ -1,6 +1,7 @@
 import React from 'react'
 import { UndoOutlined } from '@ant-design/icons'
 import { Button, Tooltip } from 'antd'
+import { Link } from 'react-router-dom'
 import classes from './ResultQuiz.module.scss'
 import WithClasses from '../hoc/withClasses'
 import ResultDetails from './ResultDetails/ResultDetails'
@@ -28,7 +29,9 @@ const ResultQuiz = ({
         icon={<UndoOutlined />}
       />
     </Tooltip>
-    <MyButton type="primary">Другие тесты</MyButton>
+    <Link to="/">
+      <MyButton type="primary">Другие тесты</MyButton>
+    </Link>
     <ResultDetails quiz={quiz} results={results} />
   </>
 )

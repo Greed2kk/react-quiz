@@ -40,3 +40,7 @@
     }
   }
 }
+
+@mixin background-gradient($from: #f8f7a4, $to: #e8d1d1) {
+  background: linear-gradient(180deg, $from 0%, $to 100%);
+}

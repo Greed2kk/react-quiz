@@ -1,8 +1,23 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 import classes from './Drawer.module.scss'
 import BackDrop from '../../UI/BackDrop/BackDrop'
 
-const links = [1, 2, 3]
+const links = [
+  { to: '/', label: 'Список Quiz', exact: true, id: 1 },
+  {
+    to: '/auth',
+    label: 'Авторизация',
+    exact: false,
+    id: 2,
+  },
+  {
+    to: '/quiz-create',
+    label: 'Создать Quiz',
+    exact: false,
+    id: 3,
+  },
+]
 
 class Drawer extends Component {
   constructor(props) {
@@ -10,12 +25,22 @@ class Drawer extends Component {
     this.props = props
   }
 
+  clickHandler = () => {
+    // eslint-disable-next-line react/destructuring-assignment
+    this.props.onClose()
+  }
+
   renderLinks() {
-    return links.map((link, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <li key={index}>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a>Link: {link}</a>
+    return links.map(link => (
+      <li key={link.id}>
+        <NavLink
+          to={link.to}
+          exact={link.exact}
+          activeClassName={classes.active}
+          onClick={this.clickHandler}
+        >
+          {link.label}
+        </NavLink>
       </li>
     ))
   }
