@@ -12,7 +12,7 @@ const links = [
     id: 2,
   },
   {
-    to: '/quiz-create',
+    to: '/quiz-creator',
     label: 'Создать Quiz',
     exact: false,
     id: 3,
