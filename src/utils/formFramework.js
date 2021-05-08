@@ -34,3 +34,30 @@ export function createFormControls() {
     options4: createOptionControl(4),
   }
 }
+
+export function validateControl(value, validation = null) {
+  if (!validation) {
+    return true
+  }
+
+  let isValid = true
+
+  if (validation.required) {
+    isValid = value.trim() !== '' && isValid
+  }
+  return isValid
+}
+
+export function validateForm(formControls) {
+  let isFormValid = true
+
+  // eslint-disable-next-line no-restricted-syntax,guard-for-in
+  for (const control in formControls) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (formControls.hasOwnProperty(control)) {
+      isFormValid =
+        formControls[control].valid && isFormValid
+    }
+  }
+  return isFormValid
+}
