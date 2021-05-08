@@ -41,6 +41,10 @@
   }
 }
 
-@mixin background-gradient($from: #f8f7a4, $to: #e8d1d1) {
+@mixin background-gradient($from: #0cff8f, $to: #e8d1d1) {
   background: linear-gradient(180deg, $from 0%, $to 100%);
+}
+
+@mixin box-shadow() {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
