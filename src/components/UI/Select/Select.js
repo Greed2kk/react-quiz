@@ -16,7 +16,7 @@ const Select = ({ label, value, onChange, options }) => {
         {options.map(option => (
           // eslint-disable-next-line react/no-array-index-key
           <option value={option.value} key={uuid()}>
-            {option.value}
+            {option.text.value || option.value}
           </option>
         ))}
       </select>
