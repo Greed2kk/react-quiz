@@ -1,0 +1,11 @@
+@import '../../../scss/mixins';
+
+.Layout {
+  height: 100vh;
+  @include flex-column;
+
+  & main {
+    @include flex-column;
+    flex-grow: 1;
+  }
+}

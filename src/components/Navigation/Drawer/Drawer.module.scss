@@ -1,0 +1,49 @@
+.Drawer {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 80%;
+  max-width: 300px;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  background: #ffffff;
+  transform: translate(0);
+  transition: transform 0.22s ease-in;
+  z-index: 90;
+
+  &.close {
+    transform: translateX(-300px);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+      margin-bottom: 15px;
+
+      a {
+        box-sizing: border-box;
+        position: relative;
+        color: #2884f6;
+        font-size: 30px;
+        text-decoration: none;
+        background-color: #d7dae2;
+        padding: 0 20px 10px 20px;
+        transition: opacity 0.3s;
+
+        &:hover,
+        &.active {
+          color: rgba(128, 205, 20, 0.87);
+        }
+      }
+    }
+  }
+}

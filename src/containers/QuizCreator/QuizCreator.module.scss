@@ -1,0 +1,38 @@
+@import './src/scss/mixins';
+
+.QuizCreator {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+  flex-grow: 1;
+  width: 100%;
+  @include background-gradient(
+    $from: #92a3fe,
+    $to: #9bb1f9
+  );
+
+  div {
+    width: 100%;
+    max-width: 800px;
+    padding: 0 20px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  form {
+    @include set-border(
+      $color: #fff,
+      $width: 2px,
+      $radius: 15px,
+      $style: solid
+    );
+    padding: 15px;
+    @include box-shadow();
+
+    input {
+      margin-right: 5px;
+    }
+  }
+}

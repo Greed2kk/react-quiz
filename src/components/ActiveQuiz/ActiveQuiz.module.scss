@@ -1,0 +1,26 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+.ActiveQuiz {
+  @include set-border;
+  width: 600px;
+  padding: 20px;
+  color: $quiz-text-color;
+  margin: 0 10px;
+  box-sizing: border-box;
+
+  p {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 40px;
+  }
+
+  small {
+    white-space: nowrap;
+  }
+}

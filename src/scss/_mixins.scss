@@ -1,0 +1,50 @@
+@mixin flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin set-border(
+  $color: #fff,
+  $width: 2px,
+  $radius: 15px,
+  $style: solid
+) {
+  border: $color $style $width;
+  border-radius: $radius;
+}
+
+@mixin frame-animation($name, $color) {
+  @keyframes #{$name} {
+    50% {
+      opacity: 0;
+      background: $color;
+    }
+  }
+}
+
+@mixin fade-in() {
+  @keyframes fadeInFromNone {
+    0% {
+      display: none;
+      opacity: 0;
+    }
+
+    1% {
+      display: block;
+      opacity: 0;
+    }
+
+    100% {
+      display: block;
+      opacity: 1;
+    }
+  }
+}
+
+@mixin background-gradient($from: #0cff8f, $to: #e8d1d1) {
+  background: linear-gradient(180deg, $from 0%, $to 100%);
+}
+
+@mixin box-shadow() {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}

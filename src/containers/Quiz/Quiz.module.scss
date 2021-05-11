@@ -1,0 +1,20 @@
+@import '../../scss/variables';
+@import './src/scss/mixins';
+
+.Quiz {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  padding: 20px 0 0 0;
+  width: 100%;
+  @include background-gradient(#4469b9, #d7dae2);
+
+  h1 {
+    color: $quiz-text-color;
+    margin-left: 10px;
+  }
+}
