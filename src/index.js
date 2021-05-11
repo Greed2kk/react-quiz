@@ -7,9 +7,7 @@ import reportWebVitals from './reportWebVitals'
 
 const app = (
   <Router>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <App />
   </Router>
 )
 

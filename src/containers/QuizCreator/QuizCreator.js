@@ -1,22 +1,33 @@
 import React, { Component } from 'react'
-import WithClasses from '../../components/hoc/withClasses'
-import classes from './QuizCreator.module.scss'
-import MyButton from '../../components/UI/Button/Button'
+import axios from 'axios/axios-quiz'
+import WithClasses from 'components/hoc/withClasses'
+import MyButton from 'components/UI/Button/Button'
+import Input from 'components/UI/Input/Input'
+import Select from 'components/UI/Select/Select'
+import openNotification from 'components/UI/Notification/Notification'
+import ModalInput from 'components/UI/Modal/Modal'
 import {
   createFormControls,
   validateControl,
   validateForm,
-} from '../../utils/formFramework'
-import Input from '../../components/UI/Input/Input'
-import Select from '../../components/UI/Select/Select'
+} from 'utils/formFramework'
+import classes from './QuizCreator.module.scss'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class QuizCreator extends Component {
   state = {
     isFormValid: false,
     quiz: [],
+    title: 'Мой quiz',
     rightAnswerId: 1,
     formControls: createFormControls(),
+    modalState: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      modalState: true,
+    })
   }
 
   onChangeHandler(value, controlName) {
@@ -88,21 +99,39 @@ class QuizCreator extends Component {
         isFormValid: false,
         rightAnswerId: 1,
         formControls: createFormControls(),
+        requestSend: false,
       }
     })
   }
 
-  /**
-   * @todo Add server save
-   */
-  createQuizHandler = e => {
+  createQuizHandler = async e => {
+    const { quiz, title } = this.state
     e.preventDefault()
-    // eslint-disable-next-line no-console,react/destructuring-assignment
-    console.log(this.state.quiz)
+
+    try {
+      const response = await axios.post('/quizes.json', {
+        title,
+        questions: quiz,
+      })
+      openNotification('success', response.statusText)
+      this.setState({
+        quiz: [],
+        isFormValid: false,
+        rightAnswerId: 1,
+        formControls: createFormControls(),
+      })
+    } catch (error) {
+      openNotification(error.name, error.message)
+      console.error(error)
+    }
   }
 
   selectChangeHandler = e => {
     this.setState({ rightAnswerId: +e.target.value })
+  }
+
+  onModalInput = title => {
+    this.setState({ title })
   }
 
   renderControls() {
@@ -138,7 +167,20 @@ class QuizCreator extends Component {
   }
 
   render() {
-    const { rightAnswerId, isFormValid, quiz } = this.state
+    const {
+      rightAnswerId,
+      isFormValid,
+      quiz,
+      modalState,
+      formControls,
+      title,
+    } = this.state
+    const {
+      options1,
+      options2,
+      options3,
+      options4,
+    } = formControls
     const select = (
       <Select
         label="Выберите правильный ответ"
@@ -146,19 +188,19 @@ class QuizCreator extends Component {
         onChange={this.selectChangeHandler}
         options={[
           {
-            text: 1,
+            text: options1,
             value: 1,
           },
           {
-            text: 2,
+            text: options2,
             value: 2,
           },
           {
-            text: 3,
+            text: options3,
             value: 3,
           },
           {
-            text: 4,
+            text: options4,
             value: 4,
           },
         ]}
@@ -167,7 +209,10 @@ class QuizCreator extends Component {
 
     return (
       <div>
-        <h1>Create quiz</h1>
+        {modalState ? (
+          <ModalInput onModalInput={this.onModalInput} />
+        ) : null}
+        <h1>{title}</h1>
         <form onSubmit={this.submitHandler}>
           {this.renderControls()}
           {select}
