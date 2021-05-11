@@ -9,36 +9,41 @@ import WithClasses from '../../components/hoc/withClasses'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Auth extends Component {
-  state = {
-    isFormValid: false,
-    formControls: {
-      email: {
-        id: 1,
-        value: '',
-        type: 'email',
-        label: 'Email',
-        errorMessage: 'Невалидный Email',
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          email: true,
+  constructor(props) {
+    super(props)
+    this.props = props
+    this.state = {
+      isFormValid: false,
+      formControls: {
+        email: {
+          id: 1,
+          value: '',
+          type: 'email',
+          label: 'Email',
+          errorMessage: 'Невалидный Email',
+          valid: false,
+          touched: false,
+          validation: {
+            required: true,
+            email: true,
+          },
+        },
+        password: {
+          id: 2,
+          value: '',
+          type: 'password',
+          label: 'Password',
+          errorMessage: 'Ненадежный пароль',
+          valid: false,
+          touched: false,
+          validation: {
+            required: true,
+            minLength: 6,
+          },
         },
       },
-      password: {
-        id: 2,
-        value: '',
-        type: 'password',
-        label: 'Password',
-        errorMessage: 'Ненадежный пароль',
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          minLength: 6,
-        },
-      },
-    },
+    }
+    this.#API_KEY = process.env.REACT_APP_AUTH_TOKEN
   }
 
   loginHandler = async () => {
@@ -51,7 +56,9 @@ class Auth extends Component {
     }
     try {
       const response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDgIGORo1c1k8otoW5U74hBMp_WK1Hx0XE`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${
+          this.#API_KEY
+        }`,
         authData
       )
       openNotification('success', response.statusText)
@@ -71,7 +78,9 @@ class Auth extends Component {
     }
     try {
       const response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDgIGORo1c1k8otoW5U74hBMp_WK1Hx0XE`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${
+          this.#API_KEY
+        }`,
         authData
       )
       openNotification('success', response.statusText)
@@ -136,6 +145,8 @@ class Auth extends Component {
 
     return isValid
   }
+
+  #API_KEY
 
   renderInputs() {
     const { formControls } = this.state
