@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import WithClasses from '../../components/hoc/withClasses'
-import classes from './QuizCreator.module.scss'
-import MyButton from '../../components/UI/Button/Button'
+import axios from 'axios/axios-quiz'
+import WithClasses from 'components/hoc/withClasses'
+import MyButton from 'components/UI/Button/Button'
+import Input from 'components/UI/Input/Input'
+import Select from 'components/UI/Select/Select'
+import openNotification from 'components/UI/Notification/Notification'
+import ModalInput from 'components/UI/Modal/Modal'
 import {
   createFormControls,
   validateControl,
   validateForm,
-} from '../../utils/formFramework'
-import Input from '../../components/UI/Input/Input'
-import Select from '../../components/UI/Select/Select'
-import openNotification from '../../components/UI/Notification/Notification'
-import ModalInput from '../../components/UI/Modal/Modal'
+} from 'utils/formFramework'
+import classes from './QuizCreator.module.scss'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class QuizCreator extends Component {
@@ -109,10 +109,10 @@ class QuizCreator extends Component {
     e.preventDefault()
 
     try {
-      const response = await axios.post(
-        'https://react-quiz-16737-default-rtdb.firebaseio.com/quizes.json',
-        { title, questions: quiz }
-      )
+      const response = await axios.post('/quizes.json', {
+        title,
+        questions: quiz,
+      })
       openNotification('success', response.statusText)
       this.setState({
         quiz: [],

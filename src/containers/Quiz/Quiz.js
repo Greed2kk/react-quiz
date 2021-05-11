@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import WithClasses from 'components/hoc/withClasses'
+import ActiveQuiz from 'components/ActiveQuiz/ActiveQuiz'
+import ResultQuiz from 'components/ResultQuiz/ResultQuiz'
+import quizData from 'fixtures/react_questions'
+import { throttle } from 'utils/throttle'
+import axios from 'axios/axios-quiz'
+import Spinner from 'components/UI/Spinner/Spinner'
 import classes from './Quiz.module.scss'
-import WithClasses from '../../components/hoc/withClasses'
-import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
-import ResultQuiz from '../../components/ResultQuiz/ResultQuiz'
-import quizData from '../../fixtures/react_questions'
-import { throttle } from '../../utils/throttle'
 
 class Quiz extends Component {
   constructor(props) {
@@ -16,7 +18,9 @@ class Quiz extends Component {
       answerState: null,
       results: {},
       rightAnswers: 0,
+      title: quizData.title,
       quiz: quizData.questions,
+      loading: true,
     }
     this.onAnswerClickHandler = throttle(
       this.onAnswerClickHandler.bind(this),
@@ -24,9 +28,20 @@ class Quiz extends Component {
     )
   }
 
-  componentDidMount() {
-    // eslint-disable-next-line no-console,react/destructuring-assignment
-    console.log('Quiz ID = ', this.props.match.params.id)
+  async componentDidMount() {
+    const { match } = this.props
+    try {
+      const response = await axios.get(
+        `/quizes/${match.params.id}.json`
+      )
+      this.setState({
+        quiz: response.data.questions,
+        loading: false,
+        title: response.data.title,
+      })
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   onAnswerClickHandler(answerId) {
@@ -79,6 +94,8 @@ class Quiz extends Component {
       answerState,
       isFinished,
       results,
+      loading,
+      title,
     } = this.state
     const totalQuestions = quiz.length
     return (
@@ -101,16 +118,21 @@ class Quiz extends Component {
           />
         ) : (
           <>
-            {' '}
-            <h1>Quiz: {quizData.title}</h1>
-            <ActiveQuiz
-              answers={quiz[activeQuestion].answers}
-              question={quiz[activeQuestion].question}
-              onAnswerClick={this.onAnswerClickHandler}
-              quizLength={totalQuestions}
-              answerNumber={activeQuestion + 1}
-              answerState={answerState}
-            />
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <h1>Quiz: {title}</h1>
+                <ActiveQuiz
+                  answers={quiz[activeQuestion].answers}
+                  question={quiz[activeQuestion].question}
+                  onAnswerClick={this.onAnswerClickHandler}
+                  quizLength={totalQuestions}
+                  answerNumber={activeQuestion + 1}
+                  answerState={answerState}
+                />
+              </>
+            )}
           </>
         )}
       </>

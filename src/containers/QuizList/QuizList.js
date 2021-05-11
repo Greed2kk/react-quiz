@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import axios from 'axios'
+import axios from 'axios/axios-quiz'
+import openNotification from 'components/UI/Notification/Notification'
+import Spinner from 'components/UI/Spinner/Spinner'
 import classes from './QuizList.module.scss'
-import openNotification from '../../components/UI/Notification/Notification'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class QuizList extends Component {
   state = {
     quizes: [],
+    loading: true,
   }
 
   async componentDidMount() {
     try {
-      const response = await axios.get(
-        'https://react-quiz-16737-default-rtdb.firebaseio.com/quizes.json'
-      )
+      const response = await axios.get('/quizes.json')
       const quizes = []
       Object.keys(response.data).forEach(key => {
         quizes.push({
@@ -22,7 +22,7 @@ class QuizList extends Component {
           name: `Quiz: ${response.data[key].title}`,
         })
       })
-      this.setState({ quizes })
+      this.setState({ quizes, loading: false })
     } catch (error) {
       openNotification(error.name, error.message)
       console.error(error)
@@ -42,10 +42,15 @@ class QuizList extends Component {
   }
 
   render() {
+    const { loading } = this.state
     return (
       <div className={classes.QuizList}>
         <h1>Cписок тестов</h1>
-        <ul>{this.renderQuizList()}</ul>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <ul>{this.renderQuizList()}</ul>
+        )}
       </div>
     )
   }
