@@ -1,6 +1,7 @@
 {
   "name": "react-quiz",
   "version": "0.1.0",
+  "homepage": "https://greed2kk.github.io/react-quiz/",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
@@ -78,7 +79,9 @@
     "lint": "stylelint '**/*.scss' eslint src --aei js",
     "lint:fix": "eslint --fix --ext .js src",
     "lint:staged": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "husky": {
     "hooks": {
