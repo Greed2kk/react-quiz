@@ -29,6 +29,7 @@
       "react/prop-types": 0,
       "react/no-array-index-key": "warn",
       "operator-linebreak": "off",
+      "no-shadow": ["warn", { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
       "prettier/prettier": [
         "error",
         {},

@@ -2,88 +2,30 @@ import React, { Component } from 'react'
 import WithClasses from 'components/hoc/withClasses'
 import ActiveQuiz from 'components/ActiveQuiz/ActiveQuiz'
 import ResultQuiz from 'components/ResultQuiz/ResultQuiz'
-import quizData from 'fixtures/react_questions'
 import { throttle } from 'utils/throttle'
-import axios from 'axios/axios-quiz'
 import Spinner from 'components/UI/Spinner/Spinner'
+import { connect } from 'react-redux'
+import {
+  fetchQuizById,
+  quizAnswerClick,
+  restartQuiz,
+} from 'store/actions/quiz'
 import classes from './Quiz.module.scss'
 
 class Quiz extends Component {
   constructor(props) {
     super(props)
     this.props = props
-    this.state = {
-      isFinished: false,
-      activeQuestion: 0,
-      answerState: null,
-      results: {},
-      rightAnswers: 0,
-      title: quizData.title,
-      quiz: quizData.questions,
-      loading: true,
-    }
-    this.onAnswerClickHandler = throttle(
-      this.onAnswerClickHandler.bind(this),
-      1000
-    )
   }
 
-  async componentDidMount() {
-    const { match } = this.props
-    try {
-      const response = await axios.get(
-        `/quizes/${match.params.id}.json`
-      )
-      this.setState({
-        quiz: response.data.questions,
-        loading: false,
-        title: response.data.title,
-      })
-    } catch (error) {
-      console.warn(error)
-    }
+  componentDidMount() {
+    const { fetchQuizById, match } = this.props
+    fetchQuizById(match.params.id)
   }
 
-  onAnswerClickHandler(answerId) {
-    const {
-      activeQuestion,
-      quiz,
-      rightAnswers,
-      results,
-    } = this.state
-    const currentQuestion = quiz[activeQuestion]
-
-    const delayAnswerCheck = setTimeout(() => {
-      if (this.finishedQuiz()) {
-        this.setState({ isFinished: true })
-      } else {
-        this.setState(prevState => ({
-          activeQuestion: ++prevState.activeQuestion,
-          answerState: null,
-        }))
-        clearTimeout(delayAnswerCheck)
-      }
-    }, 1000)
-
-    if (currentQuestion.correctAnswerId === answerId) {
-      this.setState({
-        rightAnswers: rightAnswers + 1,
-        answerState: {
-          [answerId]: 'Right',
-        },
-        results: { ...results, [activeQuestion]: 'Right' },
-      })
-    } else {
-      this.setState({
-        answerState: { [answerId]: 'Wrong' },
-        results: { ...results, [activeQuestion]: 'Wrong' }, // check here
-      })
-    }
-  }
-
-  finishedQuiz() {
-    const { quiz, activeQuestion } = this.state
-    return quiz.length === activeQuestion + 1
+  componentWillUnmount() {
+    const { restartQuiz } = this.props
+    restartQuiz()
   }
 
   render() {
@@ -95,26 +37,20 @@ class Quiz extends Component {
       isFinished,
       results,
       loading,
+      quizAnswerClick,
       title,
-    } = this.state
+      restartQuiz,
+    } = this.props
     const totalQuestions = quiz.length
     return (
       <>
-        {isFinished ? (
+        {isFinished || !quiz ? (
           <ResultQuiz
             rightAnswers={rightAnswers}
             totalQuestions={totalQuestions}
             results={results}
             quiz={quiz}
-            onRestartHandler={() =>
-              this.setState({
-                isFinished: false,
-                activeQuestion: 0,
-                answerState: null,
-                rightAnswers: 0,
-                results: {},
-              })
-            }
+            onRestartHandler={restartQuiz}
           />
         ) : (
           <>
@@ -126,7 +62,10 @@ class Quiz extends Component {
                 <ActiveQuiz
                   answers={quiz[activeQuestion].answers}
                   question={quiz[activeQuestion].question}
-                  onAnswerClick={this.onAnswerClickHandler}
+                  onAnswerClick={throttle(
+                    quizAnswerClick,
+                    1000
+                  )}
                   quizLength={totalQuestions}
                   answerNumber={activeQuestion + 1}
                   answerState={answerState}
@@ -140,4 +79,39 @@ class Quiz extends Component {
   }
 }
 
-export default WithClasses(Quiz, classes.Quiz)
+function mapStateToProps(state) {
+  const {
+    isFinished,
+    activeQuestion,
+    answerState,
+    results,
+    rightAnswers,
+    title,
+    quiz,
+    loading,
+  } = state.quiz
+  return {
+    loading,
+    isFinished,
+    activeQuestion,
+    answerState,
+    results,
+    rightAnswers,
+    title,
+    quiz,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchQuizById: id => dispatch(fetchQuizById(id)),
+    quizAnswerClick: answerId =>
+      dispatch(quizAnswerClick(answerId)),
+    restartQuiz: () => dispatch(restartQuiz()),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WithClasses(Quiz, classes.Quiz))
