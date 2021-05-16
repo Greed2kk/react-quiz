@@ -3,7 +3,6 @@ import WithClasses from 'components/hoc/withClasses'
 import MyButton from 'components/UI/Button/Button'
 import Input from 'components/UI/Input/Input'
 import Select from 'components/UI/Select/Select'
-
 import ModalInput from 'components/UI/Modal/Modal'
 import {
   createFormControls,
@@ -30,6 +29,13 @@ class QuizCreator extends Component {
     this.setState({
       modalState: true,
     })
+  }
+
+  componentDidUpdate() {
+    const { history, quizId } = this.props
+    if (quizId) {
+      history.push(`/quiz/${quizId}`)
+    }
   }
 
   onChangeHandler(value, controlName) {
@@ -217,7 +223,7 @@ class QuizCreator extends Component {
             Добавить вопрос
           </MyButton>
           <MyButton
-            disabled={quiz.length === 0}
+            disabled={quiz.questions.length === 0}
             type="success"
             onClick={this.createQuizHandler}
           >
@@ -233,6 +239,7 @@ function mapStateToProps(state) {
   return {
     quiz: state.create.quiz,
     title: state.create.quiz.title,
+    quizId: state.create.quizId,
   }
 }
 

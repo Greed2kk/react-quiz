@@ -33,7 +33,11 @@ export default function createReducer(
     case RESET_QUIZ_CREATION:
       return {
         ...state,
-        quiz: { questions: [], title: '' },
+        quizId: action.quizId,
+        quiz: {
+          questions: [],
+          title: '',
+        },
       }
 
     default:
