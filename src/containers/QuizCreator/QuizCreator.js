@@ -1,23 +1,26 @@
 import React, { Component } from 'react'
-import axios from 'axios/axios-quiz'
 import WithClasses from 'components/hoc/withClasses'
 import MyButton from 'components/UI/Button/Button'
 import Input from 'components/UI/Input/Input'
 import Select from 'components/UI/Select/Select'
-import openNotification from 'components/UI/Notification/Notification'
+
 import ModalInput from 'components/UI/Modal/Modal'
 import {
   createFormControls,
   validateControl,
   validateForm,
 } from 'utils/formFramework'
+import { connect } from 'react-redux'
+import {
+  createQuizQuestion,
+  finishCreateQuiz,
+  modalInputTitle,
+} from 'store/actions/create'
 import classes from './QuizCreator.module.scss'
 
 class QuizCreator extends Component {
   state = {
     isFormValid: false,
-    quiz: [],
-    title: 'Мой quiz',
     rightAnswerId: 1,
     formControls: createFormControls(),
     modalState: false,
@@ -58,7 +61,8 @@ class QuizCreator extends Component {
 
   addQuestionHandler = e => {
     e.preventDefault()
-    const { formControls, quiz } = this.state
+    const { quiz, createQuizQuestion } = this.props
+    const { formControls, rightAnswerId } = this.state
     const {
       question,
       options1,
@@ -66,63 +70,50 @@ class QuizCreator extends Component {
       options3,
       options4,
     } = formControls
-    this.setState(prevState => {
-      const id = quiz.length + 1
-      return {
-        quiz: (prevState.quiz = [
-          ...prevState.quiz,
-          {
-            question: question.value,
-            id,
-            correctAnswerId: prevState.rightAnswerId,
-            answers: [
-              {
-                text: options1.value,
-                id: options1.id,
-              },
-              {
-                text: options2.value,
-                id: options2.id,
-              },
-              {
-                text: options3.value,
-                id: options3.id,
-              },
-              {
-                text: options4.value,
-                id: options4.id,
-              },
-            ],
-          },
-        ]),
-        isFormValid: false,
-        rightAnswerId: 1,
-        formControls: createFormControls(),
-        requestSend: false,
-      }
+
+    const questionItem = {
+      question: question.value,
+      id: quiz.questions.length + 1,
+      correctAnswerId: rightAnswerId,
+      answers: [
+        {
+          text: options1.value,
+          id: options1.id,
+        },
+        {
+          text: options2.value,
+          id: options2.id,
+        },
+        {
+          text: options3.value,
+          id: options3.id,
+        },
+        {
+          text: options4.value,
+          id: options4.id,
+        },
+      ],
+    }
+
+    createQuizQuestion(questionItem)
+
+    this.setState({
+      isFormValid: false,
+      rightAnswerId: 1,
+      formControls: createFormControls(),
     })
   }
 
-  createQuizHandler = async e => {
-    const { quiz, title } = this.state
+  createQuizHandler = e => {
+    const { finishCreateQuiz } = this.props
     e.preventDefault()
 
-    try {
-      const response = await axios.post('/quizes.json', {
-        title,
-        questions: quiz,
-      })
-      openNotification('success', response.statusText)
-      this.setState({
-        quiz: [],
-        isFormValid: false,
-        rightAnswerId: 1,
-        formControls: createFormControls(),
-      })
-    } catch (error) {
-      openNotification(error.name, error.message)
-      console.error(error)
-    }
+    this.setState({
+      isFormValid: false,
+      rightAnswerId: 1,
+      formControls: createFormControls(),
+    })
+    finishCreateQuiz()
   }
 
   selectChangeHandler = e => {
@@ -130,7 +121,8 @@ class QuizCreator extends Component {
   }
 
   onModalInput = title => {
-    this.setState({ title })
+    const { modalInputTitle } = this.props
+    modalInputTitle(title)
   }
 
   renderControls() {
@@ -145,7 +137,9 @@ class QuizCreator extends Component {
         validation,
       } = formControls[name]
       return (
+        // eslint-disable-next-line react/no-array-index-key
         <React.Fragment key={index + 1}>
+          {/* eslint-disable */}
           <Input
             key={index}
             id={index}
@@ -159,6 +153,7 @@ class QuizCreator extends Component {
               this.onChangeHandler(e.target.value, name)
             }
           />
+          {/* eslint-enable */}
           {index === 0 ? <hr /> : null}
         </React.Fragment>
       )
@@ -169,11 +164,10 @@ class QuizCreator extends Component {
     const {
       rightAnswerId,
       isFormValid,
-      quiz,
       modalState,
       formControls,
-      title,
     } = this.state
+    const { title, quiz } = this.props
     const {
       options1,
       options2,
@@ -235,4 +229,24 @@ class QuizCreator extends Component {
   }
 }
 
-export default WithClasses(QuizCreator, classes.QuizCreator)
+function mapStateToProps(state) {
+  return {
+    quiz: state.create.quiz,
+    title: state.create.quiz.title,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    createQuizQuestion: item =>
+      dispatch(createQuizQuestion(item)),
+    finishCreateQuiz: () => dispatch(finishCreateQuiz()),
+    modalInputTitle: title =>
+      dispatch(modalInputTitle(title)),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(WithClasses(QuizCreator, classes.QuizCreator))
