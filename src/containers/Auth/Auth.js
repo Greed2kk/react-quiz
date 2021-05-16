@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import axios from 'axios'
+import openNotification from 'components/UI/Notification/Notification'
 import classes from './Auth.module.scss'
 import MyButton from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
@@ -7,41 +9,86 @@ import WithClasses from '../../components/hoc/withClasses'
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Auth extends Component {
-  state = {
-    isFormValid: false,
-    formControls: {
-      email: {
-        id: 1,
-        value: '',
-        type: 'email',
-        label: 'Email',
-        errorMessage: 'Невалидный Email',
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          email: true,
+  constructor(props) {
+    super(props)
+    this.props = props
+    this.state = {
+      isFormValid: false,
+      formControls: {
+        email: {
+          id: 1,
+          value: '',
+          type: 'email',
+          label: 'Email',
+          errorMessage: 'Невалидный Email',
+          valid: false,
+          touched: false,
+          validation: {
+            required: true,
+            email: true,
+          },
+        },
+        password: {
+          id: 2,
+          value: '',
+          type: 'password',
+          label: 'Password',
+          errorMessage: 'Ненадежный пароль',
+          valid: false,
+          touched: false,
+          validation: {
+            required: true,
+            minLength: 6,
+          },
         },
       },
-      password: {
-        id: 2,
-        value: '',
-        type: 'password',
-        label: 'Password',
-        errorMessage: 'Ненадежный пароль',
-        valid: false,
-        touched: false,
-        validation: {
-          required: true,
-          minLength: 6,
-        },
-      },
-    },
+    }
+    this.#API_KEY = process.env.REACT_APP_AUTH_TOKEN
   }
 
-  loginHandler = () => {}
+  loginHandler = async () => {
+    // eslint-disable-next-line react/destructuring-assignment
+    const { email, password } = this.state.formControls
+    const authData = {
+      email: email.value,
+      password: password.value,
+      returnSecureToken: true,
+    }
+    try {
+      const response = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${
+          this.#API_KEY
+        }`,
+        authData
+      )
+      openNotification('success', response.statusText)
+    } catch (error) {
+      openNotification(error.name, error.message)
+      console.warn(error)
+    }
+  }
 
-  registerHandler = () => {}
+  registerHandler = async () => {
+    // eslint-disable-next-line react/destructuring-assignment
+    const { email, password } = this.state.formControls
+    const authData = {
+      email: email.value,
+      password: password.value,
+      returnSecureToken: true,
+    }
+    try {
+      const response = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${
+          this.#API_KEY
+        }`,
+        authData
+      )
+      openNotification('success', response.statusText)
+    } catch (error) {
+      openNotification(error.name, error.message)
+      console.warn(error)
+    }
+  }
 
   submitHandler = e => {
     e.preventDefault()
@@ -98,6 +145,8 @@ class Auth extends Component {
 
     return isValid
   }
+
+  #API_KEY
 
   renderInputs() {
     const { formControls } = this.state

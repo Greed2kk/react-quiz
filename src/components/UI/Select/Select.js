@@ -1,4 +1,5 @@
 import React from 'react'
+import uuid from 'react-uuid'
 import classes from './Select.module.scss'
 import WithClasses from '../../hoc/withClasses'
 
@@ -12,10 +13,10 @@ const Select = ({ label, value, onChange, options }) => {
         value={value}
         onChange={onChange}
       >
-        {options.map(({ option }, index) => (
+        {options.map(option => (
           // eslint-disable-next-line react/no-array-index-key
-          <option value={value} key={value + index}>
-            {value + index}
+          <option value={option.value} key={uuid()}>
+            {option.text.value || option.value}
           </option>
         ))}
       </select>
