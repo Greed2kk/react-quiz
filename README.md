@@ -21,3 +21,4 @@
 
 `npm start`
 
+* для регистрации нужен API-key [Firebase](https://firebase.google.com/), положить его в файл `.env` в переменную `REACT_APP_AUTH_TOKEN`
