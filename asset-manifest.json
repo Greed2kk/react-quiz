@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/react-quiz/static/css/main.98377561.chunk.css",
+    "main.js": "/react-quiz/static/js/main.c3d43412.chunk.js",
+    "main.js.map": "/react-quiz/static/js/main.c3d43412.chunk.js.map",
+    "runtime-main.js": "/react-quiz/static/js/runtime-main.35a19e49.js",
+    "runtime-main.js.map": "/react-quiz/static/js/runtime-main.35a19e49.js.map",
+    "static/css/2.20030745.chunk.css": "/react-quiz/static/css/2.20030745.chunk.css",
+    "static/js/2.cca111a8.chunk.js": "/react-quiz/static/js/2.cca111a8.chunk.js",
+    "static/js/2.cca111a8.chunk.js.map": "/react-quiz/static/js/2.cca111a8.chunk.js.map",
+    "index.html": "/react-quiz/index.html",
+    "static/css/2.20030745.chunk.css.map": "/react-quiz/static/css/2.20030745.chunk.css.map",
+    "static/css/main.98377561.chunk.css.map": "/react-quiz/static/css/main.98377561.chunk.css.map",
+    "static/js/2.cca111a8.chunk.js.LICENSE.txt": "/react-quiz/static/js/2.cca111a8.chunk.js.LICENSE.txt",
+    "static/media/arrow.a5031856.svg": "/react-quiz/static/media/arrow.a5031856.svg",
+    "static/media/burger.032abe33.svg": "/react-quiz/static/media/burger.032abe33.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.35a19e49.js",
+    "static/css/2.20030745.chunk.css",
+    "static/js/2.cca111a8.chunk.js",
+    "static/css/main.98377561.chunk.css",
+    "static/js/main.c3d43412.chunk.js"
+  ]
+}
