@@ -19,7 +19,6 @@
       list-style-type: none;
       margin-bottom: 10px;
       background-position: 0 0;
-      padding: 5px 20px;
       &:hover {
         background: linear-gradient(
             to right,
@@ -33,6 +32,15 @@
         transition: all 0.25s ease-in;
       }
       a {
+        display: table-cell;
+        box-sizing: content-box;
+        text-align: center;
+        vertical-align: middle;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 500px;
+        height: 60px;
         color: #d7bcbc;
         text-decoration: none;
         font-size: 20px;

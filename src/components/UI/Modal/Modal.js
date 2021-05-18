@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Form, Input, Button } from 'antd'
+import { useHistory } from 'react-router-dom'
 
 const CollectionCreateForm = ({ handleOk }) => {
   const [form] = Form.useForm()
@@ -38,6 +39,7 @@ const CollectionCreateForm = ({ handleOk }) => {
 }
 
 const ModalInput = ({ onModalInput }) => {
+  const history = useHistory()
   const [isModalVisible, setIsModalVisible] = useState(true)
   const handleOk = values => {
     onModalInput(values.title)
@@ -45,6 +47,7 @@ const ModalInput = ({ onModalInput }) => {
   }
   const handleCancel = () => {
     setIsModalVisible(false)
+    history.push('/')
   }
 
   return (

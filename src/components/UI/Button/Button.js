@@ -6,11 +6,12 @@ const MyButton = ({
   onClick,
   disabled,
   type,
+  submitType = 'button',
 }) => {
   const cls = [classes.Button, classes[type]]
   return (
     <button
-      type="button"
+      type={submitType}
       onClick={onClick}
       className={cls.join(' ')}
       disabled={disabled}
