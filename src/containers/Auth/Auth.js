@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import openNotification from 'components/UI/Notification/Notification'
+import React, { Component, createRef } from 'react'
+import { connect } from 'react-redux'
+import { auth } from 'store/actions/auth'
 import classes from './Auth.module.scss'
 import MyButton from '../../components/UI/Button/Button'
 import Input from '../../components/UI/Input/Input'
@@ -44,50 +44,25 @@ class Auth extends Component {
       },
     }
     this.#API_KEY = process.env.REACT_APP_AUTH_TOKEN
+    this.emailInput = createRef()
   }
 
-  loginHandler = async () => {
-    // eslint-disable-next-line react/destructuring-assignment
-    const { email, password } = this.state.formControls
-    const authData = {
-      email: email.value,
-      password: password.value,
-      returnSecureToken: true,
-    }
-    try {
-      const response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${
-          this.#API_KEY
-        }`,
-        authData
-      )
-      openNotification('success', response.statusText)
-    } catch (error) {
-      openNotification(error.name, error.message)
-      console.warn(error)
-    }
+  componentDidMount() {
+    this.emailInput.current.focus()
   }
 
-  registerHandler = async () => {
+  loginHandler = () => {
     // eslint-disable-next-line react/destructuring-assignment
     const { email, password } = this.state.formControls
-    const authData = {
-      email: email.value,
-      password: password.value,
-      returnSecureToken: true,
-    }
-    try {
-      const response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${
-          this.#API_KEY
-        }`,
-        authData
-      )
-      openNotification('success', response.statusText)
-    } catch (error) {
-      openNotification(error.name, error.message)
-      console.warn(error)
-    }
+    const { auth } = this.props
+    auth(email.value, password.value, true, this.#API_KEY)
+  }
+
+  registerHandler = () => {
+    // eslint-disable-next-line react/destructuring-assignment
+    const { email, password } = this.state.formControls
+    const { auth } = this.props
+    auth(email.value, password.value, false, this.#API_KEY)
   }
 
   submitHandler = e => {
@@ -171,6 +146,7 @@ class Auth extends Component {
           label={label}
           shouldValidate={!!validation}
           errorMessage={errorMessage}
+          ref={label === 'Email' ? this.emailInput : null}
           onChange={e => this.onChangeHandler(e, name)}
         />
       )
@@ -189,6 +165,7 @@ class Auth extends Component {
           {this.renderInputs()}
           <MyButton
             type="success"
+            submitType="submit"
             onClick={this.loginHandler}
             disabled={!isFormValid}
           >
@@ -207,4 +184,14 @@ class Auth extends Component {
   }
 }
 
-export default WithClasses(Auth, classes.Auth)
+function mapDispatchToProps(dispatch) {
+  return {
+    auth: (email, password, isLoggedIn, apiKey) =>
+      dispatch(auth(email, password, isLoggedIn, apiKey)),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(WithClasses(Auth, classes.Auth))

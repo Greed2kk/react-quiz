@@ -27,9 +27,10 @@
         }
       ],
       "react/prop-types": 0,
+      "react/button-has-type": "off",
       "react/no-array-index-key": "warn",
       "operator-linebreak": "off",
-      "no-shadow": ["warn", { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
+      "no-shadow": ["off", { "builtinGlobals": false, "hoist": "functions", "allow": [] }],
       "prettier/prettier": [
         "error",
         {},

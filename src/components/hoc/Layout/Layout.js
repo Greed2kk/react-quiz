@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import classes from './Layout.module.scss'
 import WithClasses from '../withClasses'
 import MenuToggle from '../../Navigation/MenuToggle/MenuToggle'
@@ -21,13 +22,14 @@ class Layout extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, auth } = this.props
     const { menu } = this.state
     return (
       <>
         <Drawer
           isOpen={menu}
           onClose={this.menuCloseHandler}
+          isAuth={auth}
         />
         <MenuToggle
           onToggle={this.toggleMenuHandler}
@@ -39,4 +41,12 @@ class Layout extends Component {
   }
 }
 
-export default WithClasses(Layout, classes.Layout)
+function mapStateToProps(state) {
+  return {
+    auth: Boolean(state.auth.token),
+  }
+}
+
+export default connect(mapStateToProps)(
+  WithClasses(Layout, classes.Layout)
+)

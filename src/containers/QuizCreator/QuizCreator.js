@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import WithClasses from 'components/hoc/withClasses'
 import MyButton from 'components/UI/Button/Button'
 import Input from 'components/UI/Input/Input'
@@ -18,17 +18,22 @@ import {
 import classes from './QuizCreator.module.scss'
 
 class QuizCreator extends Component {
-  state = {
-    isFormValid: false,
-    rightAnswerId: 1,
-    formControls: createFormControls(),
-    modalState: false,
+  constructor(props) {
+    super(props)
+    this.state = {
+      isFormValid: false,
+      rightAnswerId: 1,
+      formControls: createFormControls(),
+      modalState: false,
+    }
+    this.questionInput = createRef()
   }
 
   componentDidMount() {
     this.setState({
       modalState: true,
     })
+    this.questionInput.current.focus()
   }
 
   componentDidUpdate() {
@@ -147,6 +152,11 @@ class QuizCreator extends Component {
         <React.Fragment key={index + 1}>
           {/* eslint-disable */}
           <Input
+            ref={
+              label === 'Введите вопрос'
+                ? this.questionInput
+                : null
+            }
             key={index}
             id={index}
             value={value}
